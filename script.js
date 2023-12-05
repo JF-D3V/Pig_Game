@@ -16,13 +16,30 @@ const btnNew = document.querySelector(`.btn--new`);
 const btnRoll = document.querySelector(`.btn--roll`);
 const btnHold = document.querySelector(`.btn--hold`);
 
+let scores, currentScore, activePlayer;
+
+const init = function () {
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+
+  diceEl.classList.add(`hidden`);
+
+  player0El.classList.add(`player--active`);
+  player1El.classList.remove(`player--active`);
+  player0El.classList.remove(`player--winner`);
+  player1El.classList.remove(`player--winner`);
+};
+
+init();
+
 // Stating conditions
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add(`hidden`);
 
 //Functions
 
+// Active Player Function
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
   currentScore = 0;
@@ -30,10 +47,6 @@ const switchPlayer = function () {
   player0El.classList.toggle(`player--active`);
   player1El.classList.toggle(`player--active`);
 };
-
-const scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
 
 // Dice functionality
 btnRoll.addEventListener(`click`, function () {
@@ -55,13 +68,14 @@ btnRoll.addEventListener(`click`, function () {
   }
 });
 
+// Hold Button Event
 btnHold.addEventListener(`click`, function () {
   //1 Add to current score
   scores[activePlayer] += currentScore;
   document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
 
   //2 Check if platers score is >= 100 - Finish the game
-  if (scores[activePlayer] >= 50) {
+  if (scores[activePlayer] >= 10) {
     document.querySelector(`.player--${activePlayer}`).classList.add(`player--winner`);
     document.querySelector(`.player--${activePlayer}`).classList.remove(`player--active`);
   } else {
@@ -69,3 +83,5 @@ btnHold.addEventListener(`click`, function () {
     switchPlayer();
   }
 });
+
+btnNew.addEventListener(`click`, init);
